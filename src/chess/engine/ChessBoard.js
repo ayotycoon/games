@@ -3,6 +3,7 @@ import { ChessQueen } from "./ChessQueen";
 import { ChessBishop } from "./ChessBishop";
 import { ChessCastle } from "./ChessCastle";
 import { ChessKing } from "./ChessKing";
+import { ChessKnight } from "./ChessKnight";
 
 
 
@@ -22,6 +23,8 @@ export class ChessBoard {
         this.board[0][0] = new ChessCastle(this.board, 0, 0);
         this.board[0][7] = new ChessCastle(this.board, 0, 7);
 
+        this.board[0][1] = new ChessKnight(this.board, 0, 1);
+        this.board[0][6] = new ChessKnight(this.board, 0, 6);
         this.board[0][3] = new ChessKing(this.board, 0, 3);
         this.board[0][4] = new ChessQueen(this.board, 0, 4);
         this.board[0][2] = new ChessBishop(this.board, 0, 2);
@@ -40,6 +43,8 @@ export class ChessBoard {
 
         this.board[7][0] = new ChessCastle(this.board, 7, 0);
         this.board[7][7] = new ChessCastle(this.board, 7, 7);
+        this.board[7][1] = new ChessKnight(this.board, 7, 1);
+        this.board[7][6] = new ChessKnight(this.board, 7, 6);
         this.board[7][3] = new ChessKing(this.board, 7, 3);
         this.board[7][4] = new ChessQueen(this.board, 7, 4);
         this.board[7][2] = new ChessBishop(this.board, 7, 2);
