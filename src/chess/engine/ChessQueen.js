@@ -1,7 +1,7 @@
 import { ChessPiece } from "./_ChessPiece";
 
 export class ChessQueen extends ChessPiece {
-    name = 'pawn'
+    name = 'queen'
     icon = 'fas fa-chess-queen'
     constructor(board, positionYIndex, positionXIndex,isPieceWhite) {
         super(board, positionYIndex, positionXIndex,isPieceWhite);

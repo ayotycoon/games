@@ -1,7 +1,7 @@
 import { ChessPiece } from "./_ChessPiece";
 
 export class ChessKnight extends ChessPiece {
-    name = 'pawn'
+    name = 'knight'
     icon = 'fas fa-chess-knight'
     constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
         super(board, positionYIndex, positionXIndex,isPieceWhite);
@@ -18,7 +18,7 @@ export class ChessKnight extends ChessPiece {
 
 
         const analyzeAndBreak = (incY,incX) => {
-            console.log(incY,incX)
+   
             if(incY < 0 || incY > 7 || incX < 0 || incX >7) return true;
            
           
