@@ -84,7 +84,7 @@ export class ChessQueen extends ChessPiece {
                     break;
                 }
             }
-            for (let i = 1; i < this.positionYIndex; i++) {
+            for (let i = 1; i < Math.max(this.positionYIndex, this.positionXIndex); i++) {
                 const incY = this.positionYIndex - i;
                 const incX = this.positionXIndex -i
                
