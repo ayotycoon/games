@@ -1,13 +1,27 @@
+import { ChessQueen } from "./ChessQueen";
 import { ChessPiece } from "./_ChessPiece";
 
 export class ChessPawn extends ChessPiece {
     name = 'pawn'
     icon = 'fas fa-chess-pawn'
+    _parent = ChessPiece.prototype
     constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
-        super(board, positionYIndex, positionXIndex,isPieceWhite);
+        super(board, positionYIndex, positionXIndex, isPieceWhite);
     }
 
+    move = (yIndex, xIndex) => {
 
+        this._parent.move.apply(this, [yIndex, xIndex, () => {
+            // check if its promotable
+
+            if (this.isPieceWhite && yIndex == 0 || !this.isPieceWhite && yIndex == 7) {
+                // promote
+                this.board[this.positionYIndex][this.positionXIndex] = new ChessQueen(this.board, yIndex, this.positionXIndex, this.isPieceWhite);
+            }
+
+
+        }])
+    }
 
     availableMoves = () => {
         let indexes = [];

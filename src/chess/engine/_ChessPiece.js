@@ -13,7 +13,7 @@ export class ChessPiece {
     board = [[]]
     id = (1 + Math.random()) * 100000000;
 
-    constructor(board, positionYIndex, positionXIndex,isPieceWhite) {
+    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
         this.board = board;
         this.isPieceWhite = isPieceWhite == undefined ? positionYIndex > 2 : isPieceWhite;
         this.positionYIndex = positionYIndex;
@@ -22,7 +22,7 @@ export class ChessPiece {
 
 
 
-    move = async (yIndex, xIndex) => {
+    move(yIndex, xIndex, cb) {
         const availableMoves = this.availableMoves();
         let canmove = false;
         availableMoves.forEach(movements => {
@@ -48,21 +48,9 @@ export class ChessPiece {
 
         // assign new pos
         this.board[this.positionYIndex][this.positionXIndex] = temp
-        if(this.name == 'pawn'){ // check if its promotable
-            
-   
-
-            if(this.isPieceWhite && yIndex  == 0 || !this.isPieceWhite && yIndex == 7){
-                const { ChessQueen } = await import('./ChessQueen')
-               
-               
-                          // promote
-                this.board[this.positionYIndex][this.positionXIndex] = new ChessQueen(this.board, yIndex, this.positionXIndex, this.isPieceWhite);
-           
-                 
-          }
-
-        }
+      if(cb){
+          cb()
+      }
 
         this.successfulMovements++;
         return true;

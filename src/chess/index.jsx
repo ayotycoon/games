@@ -33,9 +33,9 @@ function ChessGame() {
 
     function onPieceClick(piece, y, x) {
         if (availableMoves[y + "," + x]) {
-            selectedPiece.move(y, x).then(() => {
-                refreshBoard()
-            });
+            selectedPiece.move(y, x)
+            refreshBoard()
+
 
             setIsWhiteTurnToPlay(!isWhiteTurnToPlay)
 
@@ -76,7 +76,7 @@ function ChessGame() {
 
                             const shouldHighlight = availableMoves[y + "," + x];
                             return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: pieceWidth + 'px', height: pieceWidth + 'px', backgroundColor: (x % 2 == 0) == (y % 2 == 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
-                                <div className={!piece ?'': (isWhiteTurnToPlay != piece.isPieceWhite) ? 'Piece-inner-invalid':'Piece-inner-valid'} style={{ width: '70%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: !(shouldHighlight || piece && piece == selectedPiece) ? '' : 'rgba(255, 255, 0, 0.5)' }}>
+                                <div className={!piece ? '' : (isWhiteTurnToPlay != piece.isPieceWhite) ? 'Piece-inner-invalid' : 'Piece-inner-valid'} style={{ width: '70%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: !(shouldHighlight || piece && piece == selectedPiece) ? '' : 'rgba(255, 255, 0, 0.5)' }}>
                                     {piece ? <i className={piece.icon} style={{ color: (piece.isPieceWhite ? "white" : "black") }} ></i> : ''}
 
                                 </div>
