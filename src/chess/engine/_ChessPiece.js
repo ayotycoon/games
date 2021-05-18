@@ -14,13 +14,14 @@ export class ChessPiece {
     id = (1 + Math.random()) * 100000000;
 
     king = null;
+    oppKing = null;
 
-    constructor(board, king, positionYIndex, positionXIndex, isPieceWhite) {
+    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
         this.board = board;
         this.isPieceWhite = isPieceWhite == undefined ? positionYIndex > 2 : isPieceWhite;
         this.positionYIndex = positionYIndex;
         this.positionXIndex = positionXIndex;
-        this.king = king || this
+   
     }
 
     anticipateOppMoves = () => {
@@ -29,6 +30,22 @@ export class ChessPiece {
             for (let j = 0; j < this.board[i].length; j++) {
                 const cell = this.board[i][j];
                 if (cell && cell.isPieceWhite != this.isPieceWhite) {
+                    cell.availableMoves()
+                        .forEach(m => {
+                            _[m.positionYIndex + "," + m.positionXIndex] = true
+                        })
+                }
+
+            }
+        }
+        return _;
+    }
+    anticipateMyMoves = () => {
+        const _ = {}
+        for (let i = 0; i < this.board.length; i++) {
+            for (let j = 0; j < this.board[i].length; j++) {
+                const cell = this.board[i][j];
+                if (cell && cell.isPieceWhite == this.isPieceWhite) {
                     cell.availableMoves()
                         .forEach(m => {
                             _[m.positionYIndex + "," + m.positionXIndex] = true
@@ -69,8 +86,6 @@ export class ChessPiece {
         this.board[this.positionYIndex][this.positionXIndex] = temp;
         // test to see if the move puts the king at risk
         const oppMoves = this.anticipateOppMoves();
-
-        console.log(oppMoves)
         if(oppMoves[this.king.positionYIndex+','+this.king.positionXIndex]){
             // king is at risk
             // revert move
@@ -86,7 +101,15 @@ export class ChessPiece {
             
             return false;
         }
+        const myMoves = this.anticipateMyMoves();
+        if(myMoves[this.oppKing.positionYIndex+','+this.oppKing.positionXIndex]){
+            // king is at risk
+            // revert move
+            alert('check')
 
+      
+          
+        }
 
         if (cb) {
             cb()
@@ -107,5 +130,6 @@ export class ChessPiece {
     currentPosition() {
         return `Y = ${this.positionYIndex}, X = ${this.positionXIndex}`
     }
+
 
 }

@@ -3,8 +3,8 @@ import { ChessPiece } from "./_ChessPiece";
 export class ChessBishop extends ChessPiece {
     name = 'bishop'
     icon = 'fas fa-chess-bishop'
-    constructor(board, king, positionYIndex, positionXIndex, isPieceWhite) {
-        super(board, king, positionYIndex, positionXIndex, isPieceWhite);
+    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
+        super(board, positionYIndex, positionXIndex, isPieceWhite);
     }
 
     availableMoves = () => {

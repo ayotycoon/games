@@ -5,8 +5,8 @@ export class ChessPawn extends ChessPiece {
     name = 'pawn'
     icon = 'fas fa-chess-pawn'
     _parent = ChessPiece.prototype
-    constructor(board, king, positionYIndex, positionXIndex, isPieceWhite) {
-        super(board, king, positionYIndex, positionXIndex, isPieceWhite);
+    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
+        super(board, positionYIndex, positionXIndex, isPieceWhite);
     }
 
     move = (yIndex, xIndex) => {
