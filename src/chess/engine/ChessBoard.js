@@ -1,7 +1,7 @@
 import { ChessPawn } from "./ChessPawn";
 import { ChessQueen } from "./ChessQueen";
 import { ChessBishop } from "./ChessBishop";
-import { ChessCastle } from "./ChessCastle";
+import { ChessRook } from "./ChessRook";
 import { ChessKing } from "./ChessKing";
 import { ChessKnight } from "./ChessKnight";
 
@@ -23,8 +23,8 @@ export class ChessBoard {
         const blackKing = new ChessKing(this.board, 0, 3);
         this.board[0][3] = blackKing
 
-        this.board[0][0] = new ChessCastle(this.board, 0, 0);
-        this.board[0][7] = new ChessCastle(this.board, 0, 7);
+        this.board[0][0] = new ChessRook(this.board, 0, 0);
+        this.board[0][7] = new ChessRook(this.board, 0, 7);
 
         this.board[0][1] = new ChessKnight(this.board, 0, 1);
         this.board[0][6] = new ChessKnight(this.board, 0, 6);
@@ -47,8 +47,8 @@ export class ChessBoard {
 
         const whiteKing = new ChessKing(this.board, 7, 3);
         this.board[7][3] = whiteKing
-        this.board[7][0] = new ChessCastle(this.board, 7, 0);
-        this.board[7][7] = new ChessCastle(this.board, 7, 7);
+        this.board[7][0] = new ChessRook(this.board, 7, 0);
+        this.board[7][7] = new ChessRook(this.board, 7, 7);
         this.board[7][1] = new ChessKnight(this.board, 7, 1);
         this.board[7][6] = new ChessKnight(this.board, 7, 6);
         this.board[7][4] = new ChessQueen(this.board, 7, 4);
@@ -66,8 +66,9 @@ export class ChessBoard {
 
 
 
-        // isPieceWhite == undefined ? positionYIndex > 2 : isPieceWhite;
-
+       
+        
+        // set the aims for all pieces, whom they should protect and whom they should all attack
         for (let i = 0; i < this.board.length; i++) {
             for (let j = 0; j < this.board[i].length; j++) {
                 const cell = this.board[i][j];
