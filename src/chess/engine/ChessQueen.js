@@ -3,8 +3,8 @@ import { ChessPiece } from "./_ChessPiece";
 export class ChessQueen extends ChessPiece {
     name = 'queen'
     icon = 'fas fa-chess-queen'
-    constructor(board, positionYIndex, positionXIndex,isPieceWhite) {
-        super(board, positionYIndex, positionXIndex,isPieceWhite);
+    constructor(board, king,positionYIndex, positionXIndex,isPieceWhite) {
+        super(board, king,positionYIndex, positionXIndex,isPieceWhite);
     }
 
     availableMoves = () => {
@@ -105,7 +105,7 @@ export class ChessQueen extends ChessPiece {
                     break;
                 }
             }
-            for (let i = 1; i < this.positionYIndex; i++) {
+            for (let i = 1; i <= this.positionYIndex; i++) {
                 const incY = this.positionYIndex - i;
                 const incX = this.positionXIndex + i
                

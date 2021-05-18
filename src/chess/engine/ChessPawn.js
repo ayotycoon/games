@@ -5,13 +5,13 @@ export class ChessPawn extends ChessPiece {
     name = 'pawn'
     icon = 'fas fa-chess-pawn'
     _parent = ChessPiece.prototype
-    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
-        super(board, positionYIndex, positionXIndex, isPieceWhite);
+    constructor(board, king, positionYIndex, positionXIndex, isPieceWhite) {
+        super(board, king, positionYIndex, positionXIndex, isPieceWhite);
     }
 
     move = (yIndex, xIndex) => {
 
-        this._parent.move.apply(this, [yIndex, xIndex, () => {
+        return this._parent.move.apply(this, [yIndex, xIndex, () => {
             // check if its promotable
 
             if (this.isPieceWhite && yIndex == 0 || !this.isPieceWhite && yIndex == 7) {

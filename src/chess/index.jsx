@@ -33,9 +33,12 @@ function ChessGame() {
 
     function onPieceClick(piece, y, x) {
         if (availableMoves[y + "," + x]) {
-            selectedPiece.move(y, x)
-            refreshBoard()
+            if (!selectedPiece.move(y, x)) {
+                // invalid move
+                return;
+            }
 
+            refreshBoard()
 
             setIsWhiteTurnToPlay(!isWhiteTurnToPlay)
 
