@@ -1,14 +1,26 @@
-import { ChessPiece } from "./_ChessPiece";
+import { ChessPiece } from "./ChessPiece";
 
-export class ChessKing extends ChessPiece {
-    name = 'king'
-    icon = 'fas fa-chess-king'
-    constructor(board,positionYIndex, positionXIndex,isPieceWhite) {
+export class ChessKnight extends ChessPiece {
+    name = 'knight'
+    icon = 'fas fa-chess-knight'
+     constructor(
+        board:ChessPiece[][] |  null[][],
+        positionYIndex:number,
+        positionXIndex:number,
+        isPieceWhite:boolean
+        ) {
         super(board,positionYIndex, positionXIndex,isPieceWhite);
     }
 
+
+
     availableMoves = () => {
-        let indexes = [];
+        let indexes:{
+            positionYIndex:number
+            positionXIndex:number
+
+
+        }[] = [];
 
         // check up
 
@@ -16,14 +28,18 @@ export class ChessKing extends ChessPiece {
 
 
         const analyzeAndBreak = (incY,incX) => {
+   
             if(incY < 0 || incY > 7 || incX < 0 || incX >7) return true;
+           
+          
+           
             const possiblePiece = this.board[incY][incX]
             if (!possiblePiece) {
                 indexes.push({ positionYIndex: incY, positionXIndex: incX })
 
-            } else if (possiblePiece.isPieceWhite == this.isPieceWhite) {
+            } else if (possiblePiece.isPieceWhite === this.isPieceWhite) {
                 // if its same color
-                return true
+             //   return true
 
             } else {
                 indexes.push({ positionYIndex: incY, positionXIndex: incX })
@@ -37,15 +53,15 @@ export class ChessKing extends ChessPiece {
 
        
         const movements = [
-            [1,0],
-            [0,1],
-            [-1,0],
-            [0,-1],
-
-            [1,1],
-            [-1,-1],
-            [-1,1],
-            [1,-1],
+            [2,1],
+            [2,-1],
+            [-2,1],
+            [-2,-1],
+            [1,2],
+            [1,-2],
+            [-1,2],
+            [-1,-2],
+      
 
 
 
@@ -79,6 +95,7 @@ export class ChessKing extends ChessPiece {
             }
         })
     }
+
 
 
 }

@@ -1,22 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { ChessBoard } from "./engine/ChessBoard";
 import './Chess.css';
+import { ChessPiece } from "./engine/ChessPiece";
 
 const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 50
 const pieceWidth = boardWidth / 8;
 
 function ChessGame() {
 
-    const [board, setBoard] = useState([])
-    const [availableMoves, setAvailableMoves] = useState({})
-    const [selectedPiece, setSelectedPiece] = useState(null)
+    const [board, setBoard] = useState([] as ChessPiece[][] | null[][])
+    const [availableMoves, setAvailableMoves] = useState({} as { [id: string]: boolean })
+    const [selectedPiece, setSelectedPiece] = useState(null as ChessPiece | null)
 
     const chessBoardRef = useRef(new ChessBoard());
     const chessBoard = chessBoardRef.current;
     const [isWhiteTurnToPlay, setIsWhiteTurnToPlay] = useState(true);
 
 
-    function refreshBoard() {
+    function reloadBoard() {
         setBoard(chessBoard.board)
 
         setAvailableMoves({});
@@ -26,31 +27,31 @@ function ChessGame() {
 
     useEffect(() => {
 
-        refreshBoard()
+        reloadBoard()
 
 
     }, [])
 
-    function onPieceClick(piece, y, x) {
+    function onPieceClick(piece: ChessPiece | null, y: number, x: number) {
         if (availableMoves[y + "," + x]) {
-            if (!selectedPiece.move(y, x)) {
+            if (!selectedPiece?.move(y, x)) {
                 // invalid move
                 return;
             }
 
-            refreshBoard()
+            reloadBoard()
 
             setIsWhiteTurnToPlay(!isWhiteTurnToPlay)
 
 
         } else if (piece) {
-            if (isWhiteTurnToPlay != piece.isPieceWhite) return;
+            if (isWhiteTurnToPlay !== piece.isPieceWhite) return;
 
 
             // show available moves
             const a = piece.availableMoves();
 
-            const _ = {}
+            const _: { [id: string]: boolean } = {}
             a.forEach(m => {
 
                 _[m.positionYIndex + "," + m.positionXIndex] = true
@@ -69,17 +70,17 @@ function ChessGame() {
     return (
         <div className="Chess">
             <div className='Board' style={{ width: boardWidth + 'px', height: boardWidth + 'px' }} >
-                {board.map((row, y) => {
+                {board.map((row: ChessPiece[] | null[], y: number) => {
 
                     return (<div key={y} className='Board-Y' style={{ display: 'flex' }}>
 
 
 
-                        {row.map((piece, x) => {
+                        {row.map((piece: ChessPiece | null, x: number) => {
 
                             const shouldHighlight = availableMoves[y + "," + x];
-                            return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: pieceWidth + 'px', height: pieceWidth + 'px', backgroundColor: (x % 2 == 0) == (y % 2 == 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
-                                <div className={!piece ? '' : (isWhiteTurnToPlay != piece.isPieceWhite) ? 'Piece-inner-invalid' : 'Piece-inner-valid'} style={{ width: '70%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: !(shouldHighlight || piece && piece == selectedPiece) ? '' : 'rgba(255, 255, 0, 0.5)' }}>
+                            return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: pieceWidth + 'px', height: pieceWidth + 'px', backgroundColor: (x % 2 === 0) === (y % 2 === 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
+                                <div className={!piece ? '' : (isWhiteTurnToPlay !== piece.isPieceWhite) ? 'Piece-inner-invalid' : 'Piece-inner-valid'} style={{ width: '70%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: !(shouldHighlight || piece && piece === selectedPiece) ? '' : 'rgba(255, 255, 0, 0.5)' }}>
                                     {piece ? <i className={piece.icon} style={{ color: (piece.isPieceWhite ? "white" : "black") }} ></i> : ''}
 
                                 </div>
@@ -99,7 +100,7 @@ function ChessGame() {
             </div>
             <div className='Side' style={{ padding: '20px' }} >
                 Piece To Play
-<br />
+                <br />
                 <i className={'fa fa-chess '} style={{ color: isWhiteTurnToPlay ? 'white' : 'black' }} ></i>
             </div>
         </div>

@@ -1,14 +1,24 @@
-import { ChessPiece } from "./_ChessPiece";
+import { ChessPiece } from "./ChessPiece";
 
 export class ChessBishop extends ChessPiece {
     name = 'bishop'
     icon = 'fas fa-chess-bishop'
-    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
+     constructor(
+        board:ChessPiece[][] |  null[][],
+        positionYIndex:number,
+        positionXIndex:number,
+        isPieceWhite:boolean
+        ) {
         super(board, positionYIndex, positionXIndex, isPieceWhite);
     }
 
     availableMoves = () => {
-        let indexes = [];
+        let indexes:{
+            positionYIndex:number
+            positionXIndex:number
+
+
+        }[] = [];
 
         // check up
 
@@ -21,7 +31,7 @@ export class ChessBishop extends ChessPiece {
             if (!possiblePiece) {
                 indexes.push({ positionYIndex: incY, positionXIndex: incX })
 
-            } else if (possiblePiece.isPieceWhite == this.isPieceWhite) {
+            } else if (possiblePiece.isPieceWhite === this.isPieceWhite) {
                 // if its same color
                 return true
 

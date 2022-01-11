@@ -1,14 +1,24 @@
-import { ChessPiece } from "./_ChessPiece";
+import { ChessPiece } from "./ChessPiece";
 
-export class ChessQueen extends ChessPiece {
-    name = 'queen'
-    icon = 'fas fa-chess-queen'
-    constructor(board,positionYIndex, positionXIndex,isPieceWhite) {
+export class ChessRook extends ChessPiece {
+    name = 'rook'
+    icon = 'fas fa-chess-rook'
+    constructor(
+        board:ChessPiece[][] |  null[][],
+        positionYIndex:number,
+        positionXIndex:number,
+        isPieceWhite:boolean
+        ) {
         super(board,positionYIndex, positionXIndex,isPieceWhite);
     }
 
     availableMoves = () => {
-        let indexes = [];
+        let indexes:{
+            positionYIndex:number
+            positionXIndex:number
+
+
+        }[] = [];
 
         // check up
 
@@ -21,7 +31,7 @@ export class ChessQueen extends ChessPiece {
             if (!possiblePiece) {
                 indexes.push({ positionYIndex: incY, positionXIndex: incX })
 
-            } else if (possiblePiece.isPieceWhite == this.isPieceWhite) {
+            } else if (possiblePiece.isPieceWhite === this.isPieceWhite) {
                 // if its same color
                 return true
 
@@ -75,46 +85,6 @@ export class ChessQueen extends ChessPiece {
             // do diagonal 
 
 
-            for (let i = 1; i < (8-this.positionYIndex); i++) {
-                const incY = this.positionYIndex + i;
-                const incX = this.positionXIndex + i;
-               
-
-                if (analyzeAndBreak( incY,incX)) {
-                    break;
-                }
-            }
-            for (let i = 1; i < Math.max(this.positionYIndex, this.positionXIndex); i++) {
-                const incY = this.positionYIndex - i;
-                const incX = this.positionXIndex -i
-               
-
-                if (analyzeAndBreak( incY,incX)) {
-                    break;
-                }
-            }
-        
-
-
-            for (let i = 1; i < (8-this.positionYIndex); i++) {
-                const incY = this.positionYIndex + i;
-                const incX = this.positionXIndex - i;
-               
-
-                if (analyzeAndBreak( incY,incX)) {
-                    break;
-                }
-            }
-            for (let i = 1; i <= this.positionYIndex; i++) {
-                const incY = this.positionYIndex - i;
-                const incX = this.positionXIndex + i
-               
-
-                if (analyzeAndBreak( incY,incX)) {
-                    break;
-                }
-            }
-        
 
 
 

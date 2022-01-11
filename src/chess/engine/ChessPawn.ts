@@ -1,20 +1,25 @@
 import { ChessQueen } from "./ChessQueen";
-import { ChessPiece } from "./_ChessPiece";
+import { ChessPiece } from "./ChessPiece";
 
 export class ChessPawn extends ChessPiece {
     name = 'pawn'
     icon = 'fas fa-chess-pawn'
     _parent = ChessPiece.prototype
-    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
+     constructor(
+        board:ChessPiece[][] |  null[][],
+        positionYIndex:number,
+        positionXIndex:number,
+        isPieceWhite:boolean
+        ) {
         super(board, positionYIndex, positionXIndex, isPieceWhite);
     }
 
-    move = (yIndex, xIndex) => {
+    move = (yIndex:number, xIndex:number) => {
 
         return this._parent.move.apply(this, [yIndex, xIndex, () => {
             // check if its promotable
 
-            if (this.isPieceWhite && yIndex == 0 || !this.isPieceWhite && yIndex == 7) {
+            if (this.isPieceWhite && yIndex === 0 || !this.isPieceWhite && yIndex === 7) {
                 // promote
                 const queen = new ChessQueen(this.board, yIndex, this.positionXIndex, this.isPieceWhite);
                 queen.king = this.king;
@@ -27,7 +32,12 @@ export class ChessPawn extends ChessPiece {
     }
 
     availableMoves = () => {
-        let indexes = [];
+        let indexes:{
+            positionYIndex:number
+            positionXIndex:number
+
+
+        }[] = [];
         const incY1 = !this.isPieceWhite ? 1 : -1;
         const incY2 = !this.isPieceWhite ? 2 : -2;
 
@@ -40,7 +50,7 @@ export class ChessPawn extends ChessPiece {
         if (this.positionYIndex + incY1 < this.availableXMovements.length && this.positionYIndex + incY1 >= 0 && !this.board[this.positionYIndex + incY1][this.positionXIndex]) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex })
 
-            if (this.successfulMovements == 0) {
+            if (this.successfulMovements === 0) {
                 // check if its first time, only move if theres nothing in the way
 
                 if (this.positionYIndex + incY2 < this.availableYMovements.length && this.positionYIndex + incY2 >= 0 && !this.board[this.positionYIndex + incY2][this.positionXIndex]) {
@@ -56,12 +66,12 @@ export class ChessPawn extends ChessPiece {
 
 
     
-        if (this.positionYIndex + incY1 < this.availableYMovements.length && this.positionYIndex + incY1 >= 0 && this.board[this.positionYIndex + incY1][this.positionXIndex + 1] && this.board[this.positionYIndex + incY1][this.positionXIndex + 1].isPieceWhite == !this.isPieceWhite) {
+        if (this.positionYIndex + incY1 < this.availableYMovements.length && this.positionYIndex + incY1 >= 0  && this.board[this.positionYIndex + incY1][this.positionXIndex + 1]?.isPieceWhite === !this.isPieceWhite) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex + 1 })
             // check diagonal if an opp is there
         }
  
-        if (this.positionYIndex + incY1 < this.availableYMovements.length && this.positionYIndex + incY1 >= 0 && this.board[this.positionYIndex + incY1][this.positionXIndex - 1] && this.board[this.positionYIndex + incY1][this.positionXIndex - 1].isPieceWhite == !this.isPieceWhite) {
+        if (this.positionYIndex + incY1 < this.availableYMovements.length  && this.board[this.positionYIndex + incY1][this.positionXIndex - 1]?.isPieceWhite === !this.isPieceWhite) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex - 1 })
             // check diagonal if an opp is there
         }

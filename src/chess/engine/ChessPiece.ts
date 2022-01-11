@@ -1,5 +1,6 @@
+import { ChessKing } from "./ChessKing";
 
-export class ChessPiece {
+export abstract class ChessPiece {
     name = 'piece'
     icon = 'chess'
     availableXMovements = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
@@ -10,27 +11,32 @@ export class ChessPiece {
     isPieceWhite = true;
     successfulMovements = 0;
 
-    board = [[]]
+    board: ChessPiece[][] |  null[][] = [[]]
     id = (1 + Math.random()) * 100000000;
 
-    king = null;
-    oppKing = null;
+    king:ChessKing | null = null;
+    oppKing:ChessKing | null = null;
 
-    constructor(board, positionYIndex, positionXIndex, isPieceWhite) {
+    constructor(
+        board: ChessPiece[][] |  null[][],
+        positionYIndex: number,
+        positionXIndex: number,
+        isPieceWhite: boolean
+    ) {
         this.board = board;
-        this.isPieceWhite = isPieceWhite == undefined ? positionYIndex > 2 : isPieceWhite;
+        this.isPieceWhite = isPieceWhite === undefined ? positionYIndex > 2 : isPieceWhite;
         this.positionYIndex = positionYIndex;
         this.positionXIndex = positionXIndex;
-   
+
     }
 
     anticipateOppMoves = () => {
-        const _ = {}
+        const _:{[id:string]:boolean} = {}
         for (let i = 0; i < this.board.length; i++) {
             for (let j = 0; j < this.board[i].length; j++) {
-                const cell = this.board[i][j];
-                if (cell && cell.isPieceWhite != this.isPieceWhite) {
-                    cell.availableMoves()
+                const cellPiece = this.board[i][j];
+                if (cellPiece && cellPiece.isPieceWhite !== this.isPieceWhite) {
+                    cellPiece.availableMoves()
                         .forEach(m => {
                             _[m.positionYIndex + "," + m.positionXIndex] = true
                         })
@@ -45,7 +51,7 @@ export class ChessPiece {
         for (let i = 0; i < this.board.length; i++) {
             for (let j = 0; j < this.board[i].length; j++) {
                 const cell = this.board[i][j];
-                if (cell && cell.isPieceWhite == this.isPieceWhite) {
+                if (cell && cell.isPieceWhite === this.isPieceWhite) {
                     cell.availableMoves()
                         .forEach(m => {
                             _[m.positionYIndex + "," + m.positionXIndex] = true
@@ -57,12 +63,12 @@ export class ChessPiece {
         return _;
     }
 
-    move(yIndex, xIndex, cb) {
+    move(yIndex:number, xIndex:number, cb?: () => void) {
         const availableMoves = this.availableMoves();
         let canmove = false;
         availableMoves.forEach(movements => {
 
-            if (movements.positionYIndex == yIndex && movements.positionXIndex == xIndex) {
+            if (movements.positionYIndex === yIndex && movements.positionXIndex === xIndex) {
                 canmove = true;
             }
         })
@@ -86,29 +92,29 @@ export class ChessPiece {
         this.board[this.positionYIndex][this.positionXIndex] = temp;
         // test to see if the move puts the king at risk
         const oppMoves = this.anticipateOppMoves();
-        if(oppMoves[this.king.positionYIndex+','+this.king.positionXIndex]){
+        if (oppMoves[this.king?.positionYIndex + ',' + this.king?.positionXIndex]) {
             // king is at risk
             // revert move
             alert('king at risk')
 
             this.board[this.positionYIndex][this.positionXIndex] = null;
-            
+
             this.positionYIndex = previousPositionYIndex;
             this.positionXIndex = previousPositionXIndex;
 
             this.board[previousPositionYIndex][previousPositionXIndex] = temp;
-            
-            
+
+
             return false;
         }
         const myMoves = this.anticipateMyMoves();
-        if(myMoves[this.oppKing.positionYIndex+','+this.oppKing.positionXIndex]){
+        if (myMoves[this.oppKing?.positionYIndex + ',' + this.oppKing?.positionXIndex]) {
             // king is at risk
             // revert move
             alert('check')
 
-      
-          
+
+
         }
 
         if (cb) {
@@ -120,9 +126,15 @@ export class ChessPiece {
 
 
     }
-    availableMoves = (maxY, maxX) => {
-        return [];
-    }
+    availableMoves = () => {
+        return [] as {
+            positionYIndex: number;
+            positionY: string;
+            positionXIndex: number;
+            positionX: string;
+        }[]
+    
+}
 
     toString() {
         return `name = ${this.name} \ntype = ${this.isPieceWhite ? 'White' : 'Black'} \nposition = ${this.availableXMovements[this.positionXIndex]}${this.availableYMovements[this.positionYIndex]}`;
