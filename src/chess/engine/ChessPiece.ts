@@ -4,7 +4,7 @@ export abstract class ChessPiece {
     name = 'piece'
     icon = 'chess'
     static availableXMovements = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    static availableYMovements = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    static availableYMovements = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
     positionXIndex = 0;
     positionYIndex = 0;
@@ -137,7 +137,12 @@ export abstract class ChessPiece {
 }
 
     toString() {
-        return `name = ${this.name} \ntype = ${this.isPieceWhite ? 'White' : 'Black'} \nposition = ${ChessPiece.availableXMovements[this.positionXIndex]}${ChessPiece.availableYMovements[this.positionYIndex]}`;
+        return {
+            name:this.name,
+            type :this.isPieceWhite ? 'White' : 'Black',
+            position:`${ChessPiece.availableXMovements[this.positionXIndex]}${ChessPiece.availableYMovements[this.positionYIndex]}`
+        }
+;
     }
     currentPosition() {
         return `Y = ${this.positionYIndex}, X = ${this.positionXIndex}`
