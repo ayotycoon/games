@@ -1,4 +1,4 @@
-.Chess {
+.Whole-Body {
   text-align: center;
 
   background-color: #3c3f44;
@@ -7,6 +7,14 @@
   font-size: calc(10px + 2vmin);
   color: yellow;
   box-sizing: border-box;
+
+}
+.Chess-Field{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.Chess-Playable{
   display:flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -18,6 +26,11 @@
 
 .Board-X{
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Bar-X{
   display: flex;
   align-items: center;
   justify-content: center;

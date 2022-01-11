@@ -47,13 +47,13 @@ export class ChessPawn extends ChessPiece {
         // check if it can move a step in y axes and if its own piece isnt on its moves
 
 
-        if (this.positionYIndex + incY1 < this.availableXMovements.length && this.positionYIndex + incY1 >= 0 && !this.board[this.positionYIndex + incY1][this.positionXIndex]) {
+        if (this.positionYIndex + incY1 < ChessPiece.availableXMovements.length && this.positionYIndex + incY1 >= 0 && !this.board[this.positionYIndex + incY1][this.positionXIndex]) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex })
 
             if (this.successfulMovements === 0) {
                 // check if its first time, only move if theres nothing in the way
 
-                if (this.positionYIndex + incY2 < this.availableYMovements.length && this.positionYIndex + incY2 >= 0 && !this.board[this.positionYIndex + incY2][this.positionXIndex]) {
+                if (this.positionYIndex + incY2 < ChessPiece.availableYMovements.length && this.positionYIndex + incY2 >= 0 && !this.board[this.positionYIndex + incY2][this.positionXIndex]) {
                     indexes.push({ positionYIndex: this.positionYIndex + incY2, positionXIndex: this.positionXIndex })
 
                 }
@@ -66,12 +66,12 @@ export class ChessPawn extends ChessPiece {
 
 
     
-        if (this.positionYIndex + incY1 < this.availableYMovements.length && this.positionYIndex + incY1 >= 0  && this.board[this.positionYIndex + incY1][this.positionXIndex + 1]?.isPieceWhite === !this.isPieceWhite) {
+        if (this.positionYIndex + incY1 < ChessPiece.availableYMovements.length && this.positionYIndex + incY1 >= 0  && this.board[this.positionYIndex + incY1][this.positionXIndex + 1]?.isPieceWhite === !this.isPieceWhite) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex + 1 })
             // check diagonal if an opp is there
         }
  
-        if (this.positionYIndex + incY1 < this.availableYMovements.length  && this.board[this.positionYIndex + incY1][this.positionXIndex - 1]?.isPieceWhite === !this.isPieceWhite) {
+        if (this.positionYIndex + incY1 < ChessPiece.availableYMovements.length  && this.board[this.positionYIndex + incY1][this.positionXIndex - 1]?.isPieceWhite === !this.isPieceWhite) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex - 1 })
             // check diagonal if an opp is there
         }
@@ -86,9 +86,9 @@ export class ChessPawn extends ChessPiece {
             return {
 
                 positionYIndex: index.positionYIndex,
-                positionY: this.availableYMovements[index.positionYIndex],
+                positionY: ChessPiece.availableYMovements[index.positionYIndex],
                 positionXIndex: index.positionXIndex,
-                positionX: this.availableXMovements[index.positionYIndex]
+                positionX: ChessPiece.availableXMovements[index.positionYIndex]
             }
         })
     }

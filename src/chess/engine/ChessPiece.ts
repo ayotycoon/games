@@ -3,8 +3,8 @@ import { ChessKing } from "./ChessKing";
 export abstract class ChessPiece {
     name = 'piece'
     icon = 'chess'
-    availableXMovements = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    availableYMovements = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    static availableXMovements = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    static availableYMovements = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
     positionXIndex = 0;
     positionYIndex = 0;
@@ -137,7 +137,7 @@ export abstract class ChessPiece {
 }
 
     toString() {
-        return `name = ${this.name} \ntype = ${this.isPieceWhite ? 'White' : 'Black'} \nposition = ${this.availableXMovements[this.positionXIndex]}${this.availableYMovements[this.positionYIndex]}`;
+        return `name = ${this.name} \ntype = ${this.isPieceWhite ? 'White' : 'Black'} \nposition = ${ChessPiece.availableXMovements[this.positionXIndex]}${ChessPiece.availableYMovements[this.positionYIndex]}`;
     }
     currentPosition() {
         return `Y = ${this.positionYIndex}, X = ${this.positionXIndex}`

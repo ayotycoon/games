@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { ChessBoard } from "./engine/ChessBoard";
 import './Chess.css';
 import { ChessPiece } from "./engine/ChessPiece";
+import Bar from "./misc/Bar";
 
-const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 50
+const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 150
 const pieceWidth = boardWidth / 8;
 
 function ChessGame() {
@@ -68,40 +69,52 @@ function ChessGame() {
     }
 
     return (
-        <div className="Chess">
-            <div className='Board' style={{ width: boardWidth + 'px', height: boardWidth + 'px' }} >
-                {board.map((row: ChessPiece[] | null[], y: number) => {
+        <div className="Whole-Body">
+        <div className="Chess-Field">
+            <div className="Chess-Pre-Playable">
+            <Bar pieceWidth={pieceWidth} horizontal />
+            <div className="Chess-Playable">
+                <Bar pieceWidth={pieceWidth} horizontal={false} />
+                <div className='Board' style={{ width: boardWidth + 'px', height: boardWidth + 'px' }} >
 
-                    return (<div key={y} className='Board-Y' style={{ display: 'flex' }}>
+                    {board.map((row: ChessPiece[] | null[], y: number) => {
+
+                        return (<div key={y} className='Board-Y' style={{ display: 'flex' }}>
 
 
 
-                        {row.map((piece: ChessPiece | null, x: number) => {
+                            {row.map((piece: ChessPiece | null, x: number) => {
 
-                            const shouldHighlight = availableMoves[y + "," + x];
-                            return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: pieceWidth + 'px', height: pieceWidth + 'px', backgroundColor: (x % 2 === 0) === (y % 2 === 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
-                                <div className={!piece ? '' : (isWhiteTurnToPlay !== piece.isPieceWhite) ? 'Piece-inner-invalid' : 'Piece-inner-valid'} style={{ width: '70%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: !(shouldHighlight || piece && piece === selectedPiece) ? '' : 'rgba(255, 255, 0, 0.5)' }}>
-                                    {piece ? <i className={piece.icon} style={{ color: (piece.isPieceWhite ? "white" : "black") }} ></i> : ''}
+                                const shouldHighlight = availableMoves[y + "," + x];
+                                return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: pieceWidth + 'px', height: pieceWidth + 'px', backgroundColor: (x % 2 === 0) === (y % 2 === 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
+                                    <div className={!piece ? '' : (isWhiteTurnToPlay !== piece.isPieceWhite) ? 'Piece-inner-invalid' : 'Piece-inner-valid'} style={{ width: '70%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: !(shouldHighlight || piece && piece === selectedPiece) ? '' : 'rgba(255, 255, 0, 0.5)' }}>
+                                        {piece ? <i className={piece.icon} style={{ color: (piece.isPieceWhite ? "white" : "black") }} ></i> : ''}
 
+                                    </div>
                                 </div>
-                            </div>
 
 
-                            )
-                        })}
+                                )
+                            })}
 
 
 
-                    </div>
+                        </div>
 
 
-                    )
-                })}
+                        )
+                    })}
+                </div>
+                <Bar pieceWidth={pieceWidth} horizontal={false} />
+                </div>
+                <Bar pieceWidth={pieceWidth} horizontal />
+             
             </div>
             <div className='Side' style={{ padding: '20px' }} >
                 Piece To Play
                 <br />
                 <i className={'fa fa-chess '} style={{ color: isWhiteTurnToPlay ? 'white' : 'black' }} ></i>
+            </div>
             </div>
         </div>
     );

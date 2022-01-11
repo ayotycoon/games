@@ -98,9 +98,9 @@ export class ChessBishop extends ChessPiece {
             return {
 
                 positionYIndex: index.positionYIndex,
-                positionY: this.availableYMovements[index.positionYIndex],
+                positionY: ChessPiece.availableYMovements[index.positionYIndex],
                 positionXIndex: index.positionXIndex,
-                positionX: this.availableXMovements[index.positionYIndex]
+                positionX: ChessPiece.availableXMovements[index.positionYIndex]
             }
         })
     }
