@@ -7,9 +7,11 @@ export class ChessKing extends ChessPiece {
         board:ChessPiece[][] |  null[][],
         positionYIndex:number,
         positionXIndex:number,
-        isPieceWhite:boolean
+        isPieceWhite:boolean,ghostId?:number
         ) {
-        super(board,positionYIndex, positionXIndex,isPieceWhite);
+           
+        super(board,positionYIndex, positionXIndex,isPieceWhite,ghostId);
+      
     }
 
     availableMoves = () => {

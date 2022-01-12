@@ -9,9 +9,9 @@ export class ChessPawn extends ChessPiece {
         board:ChessPiece[][] |  null[][],
         positionYIndex:number,
         positionXIndex:number,
-        isPieceWhite:boolean
+        isPieceWhite:boolean,ghostId?:number
         ) {
-        super(board, positionYIndex, positionXIndex, isPieceWhite);
+        super(board, positionYIndex, positionXIndex, isPieceWhite,ghostId);
     }
 
     move = (yIndex:number, xIndex:number) => {
@@ -21,7 +21,7 @@ export class ChessPawn extends ChessPiece {
 
             if (this.isPieceWhite && yIndex === 0 || !this.isPieceWhite && yIndex === 7) {
                 // promote
-                const queen = new ChessQueen(this.board, yIndex, this.positionXIndex, this.isPieceWhite);
+                const queen = new ChessQueen(this.board, yIndex, this.positionXIndex, this.isPieceWhite,this.id);
                 queen.king = this.king;
                 queen.oppKing = this.oppKing;
                 this.board[this.positionYIndex][this.positionXIndex] = queen;
@@ -66,12 +66,12 @@ export class ChessPawn extends ChessPiece {
 
 
     
-        if (this.positionYIndex + incY1 < ChessPiece.availableYMovements.length && this.positionYIndex + incY1 >= 0  && this.board[this.positionYIndex + incY1][this.positionXIndex + 1]?.isPieceWhite === !this.isPieceWhite) {
+        if (this.positionYIndex + incY1 < ChessPiece.availableYMovements.length && this.positionYIndex + incY1 >= 0  && this.board[this.positionYIndex + incY1][this.positionXIndex + 1] &&this.board[this.positionYIndex + incY1][this.positionXIndex + 1]?.isPieceWhite === !this.isPieceWhite) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex + 1 })
             // check diagonal if an opp is there
         }
  
-        if (this.positionYIndex + incY1 < ChessPiece.availableYMovements.length  && this.board[this.positionYIndex + incY1][this.positionXIndex - 1]?.isPieceWhite === !this.isPieceWhite) {
+        if (this.positionYIndex + incY1 < ChessPiece.availableYMovements.length  && this.positionYIndex + incY1 >= 0 && this.board[this.positionYIndex + incY1][this.positionXIndex - 1] &&this.board[this.positionYIndex + incY1][this.positionXIndex - 1]?.isPieceWhite === !this.isPieceWhite) {
             indexes.push({ positionYIndex: this.positionYIndex + incY1, positionXIndex: this.positionXIndex - 1 })
             // check diagonal if an opp is there
         }

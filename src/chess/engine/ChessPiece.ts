@@ -12,7 +12,8 @@ export abstract class ChessPiece {
     successfulMovements = 0;
 
     board: ChessPiece[][] |  null[][] = [[]]
-    id = (1 + Math.random()) * 100000000;
+    static globalId = 0
+    id = 0
 
     king:ChessKing | null = null;
     oppKing:ChessKing | null = null;
@@ -21,8 +22,17 @@ export abstract class ChessPiece {
         board: ChessPiece[][] |  null[][],
         positionYIndex: number,
         positionXIndex: number,
-        isPieceWhite: boolean
+        isPieceWhite: boolean,
+        ghostId?:number
     ) {
+        if(ghostId == undefined){
+            ChessPiece.globalId++;
+            this.id = ChessPiece.globalId;
+        }else{
+            this.id = ghostId
+        }
+        
+       
         this.board = board;
         this.isPieceWhite = isPieceWhite === undefined ? positionYIndex > 2 : isPieceWhite;
         this.positionYIndex = positionYIndex;
@@ -138,6 +148,7 @@ export abstract class ChessPiece {
 
     toString() {
         return {
+            id:this.id,
             name:this.name,
             type :this.isPieceWhite ? 'White' : 'Black',
             position:`${ChessPiece.availableXMovements[this.positionXIndex]}${ChessPiece.availableYMovements[this.positionYIndex]}`

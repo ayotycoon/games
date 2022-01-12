@@ -6,7 +6,7 @@ import Bar from "./misc/Bar";
 import { devLog } from '../env'
 
 
-const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 150
+const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 200
 const pieceWidth = boardWidth / 8;
 
 function ChessGame() {
@@ -15,22 +15,25 @@ function ChessGame() {
     const [availableMoves, setAvailableMoves] = useState({} as { [id: string]: boolean })
     const [selectedPiece, setSelectedPiece] = useState(null as ChessPiece | null)
 
-    const chessBoardRef = useRef(new ChessBoard());
-    const chessBoard = chessBoardRef.current;
+    const chessBoardRef = useRef(null as any as ChessBoard);
+   
     const [isWhiteTurnToPlay, setIsWhiteTurnToPlay] = useState(true);
 
 
     function reloadBoard() {
-        setBoard(chessBoard.board)
-
+        setBoard(chessBoardRef.current.board)
         setAvailableMoves({});
         setSelectedPiece(null);
+    }
+    function init() {
+        chessBoardRef.current = new ChessBoard();
+        reloadBoard()
     }
 
 
     useEffect(() => {
+        init()
 
-        reloadBoard()
 
 
     }, [])
@@ -77,6 +80,7 @@ function ChessGame() {
 
     return (
         <div className="Whole-Body">
+            <input type='range' />
             <div className="Chess-Field">
                 <div className="Chess-Pre-Playable">
                     <Bar pieceWidth={pieceWidth} horizontal />

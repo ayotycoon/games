@@ -20,6 +20,7 @@ export class ChessBoard {
     ]
 
     constructor() {
+       
         const blackKing = new ChessKing(this.board, 0, 3,false);
         this.board[0][3] = blackKing
 
@@ -73,6 +74,7 @@ export class ChessBoard {
             for (let j = 0; j < this.board[i].length; j++) {
                 const cell = this.board[i][j];
                 if (cell) {
+                   // console.log(cell.id)
                     if (cell.isPieceWhite) { // if its my piece
 
                         cell.king = whiteKing;
@@ -89,7 +91,7 @@ export class ChessBoard {
     }
 
     toString() {
-        return JSON.stringify(this.board.map(r => r.map(_ => _ ? `${_.name}` : 'null')));
+        return JSON.stringify(this.board.map(r => r.map(_ => _ ? `${_.id}-${_.name}` : 'null')));
     }
 
 }
