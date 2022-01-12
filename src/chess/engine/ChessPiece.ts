@@ -78,7 +78,7 @@ export abstract class ChessPiece {
     }
 
     move(yIndex: number, xIndex: number, cb?: () => void) {
-        const movement = new PieceMovement(this.id, this.positionYIndex, this.positionXIndex, yIndex, xIndex);
+        const movement = new PieceMovement(this.chessBoard.pieceHash[this.id], this.positionYIndex, this.positionXIndex, yIndex, xIndex);
         const availableMoves = this.availableMoves();
         let canmove = false;
         availableMoves.forEach(movements => {
@@ -137,7 +137,7 @@ export abstract class ChessPiece {
         }
 
         this.successfulMovements++;
-        this.chessBoard.history.push(movement);
+        this.chessBoard.history.unshift(movement);
         devLog(movement)
         return true;
 

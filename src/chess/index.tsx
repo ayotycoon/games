@@ -4,8 +4,10 @@ import './Chess.css';
 import { ChessPiece } from "./engine/ChessPiece";
 import Bar from "./misc/Bar";
 import { devLog } from '../env'
+import { PieceMovement } from "./engine/PieceMovement";
+import { csvGenerator } from "../misc/functions";
 
-function f(){
+function f() {
     return Math.min(window.innerHeight, window.innerWidth) - 150
 }
 
@@ -16,9 +18,10 @@ function ChessGame() {
         pieceWidth: (f()) / 8
     })
     const [board, setBoard] = useState([] as ChessPiece[][] | null[][])
+    const [movementHistory, setMovementHistory] = useState([] as PieceMovement[])
     const [availableMoves, setAvailableMoves] = useState({} as { [id: string]: boolean })
     const [selectedPiece, setSelectedPiece] = useState(null as ChessPiece | null)
-     
+
     const chessBoardRef = useRef(null as any as ChessBoard);
 
     const [isWhiteTurnToPlay, setIsWhiteTurnToPlay] = useState(true);
@@ -27,6 +30,7 @@ function ChessGame() {
     function reloadBoard() {
         chessBoardRef.current.isWhiteTurnToPlay = !chessBoardRef.current.isWhiteTurnToPlay
         setBoard(chessBoardRef.current.board)
+        setMovementHistory(chessBoardRef.current.history)
         setAvailableMoves({});
         setSelectedPiece(null);
         setIsWhiteTurnToPlay(chessBoardRef.current.isWhiteTurnToPlay)
@@ -69,7 +73,7 @@ function ChessGame() {
 
             reloadBoard()
 
-            
+
 
 
         } else if (piece) {
@@ -148,6 +152,27 @@ function ChessGame() {
                         Piece To Play
                         <br />
                         <i className={'fa fa-chess '} style={{ color: isWhiteTurnToPlay ? 'white' : 'black' }} ></i>
+                        <hr />
+                        <div style={{ textAlign: 'center' }}>
+                            {movementHistory.length != 0 && <>
+                                <button onClick={() => { csvGenerator(movementHistory) }}>Export</button>
+                                <br />
+                            </>}
+                            {movementHistory.map((movement, key) => {
+
+                                return (
+                                    <div style={{ fontSize: '13px', marginBottom: '5px', display: 'flex', justifyContent: 'center' }} key={key}>
+                                        <div style={{ marginRight: '5px' }}>
+                                            <i className={movement.icon} style={{ color: movement.isPieceWhite ? 'white' : 'black' }} />
+                                        </div>
+                                        <div>
+                                            {movement.prevPosition} <i className="fa fa-arrow-right" /> {movement.position}
+                                        </div>
+                                    </div>
+                                )
+
+                            })}
+                        </div>
                     </div> </div>
             </div>
         </div>
