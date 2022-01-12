@@ -6,7 +6,7 @@ import Bar from "./misc/Bar";
 import { devLog } from '../env'
 
 
-const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 200
+const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 150
 const pieceWidth = boardWidth / 8;
 
 function ChessGame() {
