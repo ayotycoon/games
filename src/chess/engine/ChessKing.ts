@@ -1,16 +1,17 @@
+import { ChessBoard } from "./ChessBoard";
 import { ChessPiece } from "./ChessPiece";
 
 export class ChessKing extends ChessPiece {
     name = 'king'
     icon = 'fas fa-chess-king'
     constructor(
-        board:ChessPiece[][] |  null[][],
+        chessBoard:ChessBoard,
         positionYIndex:number,
         positionXIndex:number,
         isPieceWhite:boolean,ghostId?:number
         ) {
            
-        super(board,positionYIndex, positionXIndex,isPieceWhite,ghostId);
+        super(chessBoard,positionYIndex, positionXIndex,isPieceWhite,ghostId);
       
     }
 
@@ -29,7 +30,7 @@ export class ChessKing extends ChessPiece {
 
         const analyzeAndBreak = (incY,incX) => {
             if(incY < 0 || incY > 7 || incX < 0 || incX >7) return true;
-            const possiblePiece = this.board[incY][incX]
+            const possiblePiece = this.chessBoard.board[incY][incX]
             if (!possiblePiece) {
                 indexes.push({ positionYIndex: incY, positionXIndex: incX })
 

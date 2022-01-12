@@ -1,15 +1,17 @@
+import { ChessBoard } from "./ChessBoard";
 import { ChessPiece } from "./ChessPiece";
 
 export class ChessKnight extends ChessPiece {
     name = 'knight'
     icon = 'fas fa-chess-knight'
      constructor(
-        board:ChessPiece[][] |  null[][],
+        chessBoard:ChessBoard,
         positionYIndex:number,
         positionXIndex:number,
         isPieceWhite:boolean,ghostId?:number
         ) {
-        super(board,positionYIndex, positionXIndex,isPieceWhite,ghostId);
+        super(chessBoard,positionYIndex, positionXIndex,isPieceWhite,ghostId);
+
     }
 
 
@@ -33,7 +35,7 @@ export class ChessKnight extends ChessPiece {
            
           
            
-            const possiblePiece = this.board[incY][incX]
+            const possiblePiece = this.chessBoard.board[incY][incX]
             if (!possiblePiece) {
                 indexes.push({ positionYIndex: incY, positionXIndex: incX })
 

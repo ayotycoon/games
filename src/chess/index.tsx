@@ -5,30 +5,35 @@ import { ChessPiece } from "./engine/ChessPiece";
 import Bar from "./misc/Bar";
 import { devLog } from '../env'
 
-
+function f(){
+    return Math.min(window.innerHeight, window.innerWidth) - 150
+}
 
 
 function ChessGame() {
     const [size, setSize] = useState({
-        boardWidth: Math.min(window.innerHeight, window.innerWidth) - 150,
-        pieceWidth: (Math.min(window.innerHeight, window.innerWidth) - 150) / 8
+        boardWidth: f(),
+        pieceWidth: (f()) / 8
     })
     const [board, setBoard] = useState([] as ChessPiece[][] | null[][])
     const [availableMoves, setAvailableMoves] = useState({} as { [id: string]: boolean })
     const [selectedPiece, setSelectedPiece] = useState(null as ChessPiece | null)
-
+     
     const chessBoardRef = useRef(null as any as ChessBoard);
 
     const [isWhiteTurnToPlay, setIsWhiteTurnToPlay] = useState(true);
 
 
     function reloadBoard() {
+        chessBoardRef.current.isWhiteTurnToPlay = !chessBoardRef.current.isWhiteTurnToPlay
         setBoard(chessBoardRef.current.board)
         setAvailableMoves({});
         setSelectedPiece(null);
+        setIsWhiteTurnToPlay(chessBoardRef.current.isWhiteTurnToPlay)
     }
     function init() {
         chessBoardRef.current = new ChessBoard();
+
         reloadBoard()
     }
 
@@ -36,7 +41,7 @@ function ChessGame() {
     useEffect(() => {
         init()
         const cb = () => {
-            const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 150
+            const boardWidth = f()
             const pieceWidth = boardWidth / 8;
 
             setSize(
@@ -64,7 +69,7 @@ function ChessGame() {
 
             reloadBoard()
 
-            setIsWhiteTurnToPlay(!isWhiteTurnToPlay)
+            
 
 
         } else if (piece) {
@@ -138,11 +143,12 @@ function ChessGame() {
                     <Bar pieceWidth={size.pieceWidth} horizontal />
 
                 </div>
-                <div className='Side' style={{ padding: '20px' }} >
-                    Piece To Play
-                    <br />
-                    <i className={'fa fa-chess '} style={{ color: isWhiteTurnToPlay ? 'white' : 'black' }} ></i>
-                </div>
+                <div className='Side' style={{ padding: '10px' }} >
+                    <div className='' style={{ padding: '0 30px' }} >
+                        Piece To Play
+                        <br />
+                        <i className={'fa fa-chess '} style={{ color: isWhiteTurnToPlay ? 'white' : 'black' }} ></i>
+                    </div> </div>
             </div>
         </div>
     );
