@@ -6,17 +6,19 @@ import Bar from "./misc/Bar";
 import { devLog } from '../env'
 
 
-const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 150
-const pieceWidth = boardWidth / 8;
+
 
 function ChessGame() {
-
+    const [size, setSize] = useState({
+        boardWidth: Math.min(window.innerHeight, window.innerWidth) - 150,
+        pieceWidth: (Math.min(window.innerHeight, window.innerWidth) - 150) / 8
+    })
     const [board, setBoard] = useState([] as ChessPiece[][] | null[][])
     const [availableMoves, setAvailableMoves] = useState({} as { [id: string]: boolean })
     const [selectedPiece, setSelectedPiece] = useState(null as ChessPiece | null)
 
     const chessBoardRef = useRef(null as any as ChessBoard);
-   
+
     const [isWhiteTurnToPlay, setIsWhiteTurnToPlay] = useState(true);
 
 
@@ -33,7 +35,22 @@ function ChessGame() {
 
     useEffect(() => {
         init()
+        const cb = () => {
+            const boardWidth = Math.min(window.innerHeight, window.innerWidth) - 150
+            const pieceWidth = boardWidth / 8;
 
+            setSize(
+                {
+                    boardWidth,
+                    pieceWidth
+                }
+            )
+
+        }
+        window.addEventListener('resize', cb)
+        return () => {
+            window.removeEventListener('resize', cb)
+        }
 
 
     }, [])
@@ -80,13 +97,13 @@ function ChessGame() {
 
     return (
         <div className="Whole-Body">
-            <input type='range' />
+
             <div className="Chess-Field">
                 <div className="Chess-Pre-Playable">
-                    <Bar pieceWidth={pieceWidth} horizontal />
+                    <Bar pieceWidth={size.pieceWidth} horizontal />
                     <div className="Chess-Playable">
-                        <Bar pieceWidth={pieceWidth} horizontal={false} />
-                        <div className='Board' style={{ width: boardWidth + 'px', height: boardWidth + 'px' }} >
+                        <Bar pieceWidth={size.pieceWidth} horizontal={false} />
+                        <div className='Board' style={{ width: size.boardWidth + 'px', height: size.boardWidth + 'px' }} >
 
                             {board.map((row: ChessPiece[] | null[], y: number) => {
 
@@ -97,7 +114,7 @@ function ChessGame() {
                                     {row.map((piece: ChessPiece | null, x: number) => {
 
                                         const shouldHighlight = availableMoves[y + "," + x];
-                                        return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: pieceWidth + 'px', height: pieceWidth + 'px', backgroundColor: (x % 2 === 0) === (y % 2 === 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
+                                        return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: size.pieceWidth + 'px', height: size.pieceWidth + 'px', backgroundColor: (x % 2 === 0) === (y % 2 === 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
                                             <div className={!piece ? '' : (isWhiteTurnToPlay !== piece.isPieceWhite) ? 'Piece-inner-invalid' : 'Piece-inner-valid'} style={{ width: '70%', height: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: !(shouldHighlight || piece && piece === selectedPiece) ? '' : 'rgba(255, 255, 0, 0.5)' }}>
                                                 {piece ? <i className={piece.icon} style={{ color: (piece.isPieceWhite ? "white" : "black") }} ></i> : ''}
 
@@ -116,9 +133,9 @@ function ChessGame() {
                                 )
                             })}
                         </div>
-                        <Bar pieceWidth={pieceWidth} horizontal={false} />
+                        <Bar pieceWidth={size.pieceWidth} horizontal={false} />
                     </div>
-                    <Bar pieceWidth={pieceWidth} horizontal />
+                    <Bar pieceWidth={size.pieceWidth} horizontal />
 
                 </div>
                 <div className='Side' style={{ padding: '20px' }} >

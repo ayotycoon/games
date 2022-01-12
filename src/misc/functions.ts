@@ -8,4 +8,5 @@ export const safeObjectAssessor = (...args) => {
 
     return true;
 
-}
+} 
+
