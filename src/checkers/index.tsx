@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { ChessBoard } from "./engine/ChessBoard";
-import './Chess.css';
-import { ChessPiece } from "./engine/ChessPiece";
-import Bar from "./misc/Bar";
+import { CheckerBoard } from "./engine/CheckerBoard";
+import './Checkers.css';
+import { CheckerPiece } from "./engine/CheckerPiece";
+
 import { devLog } from '../env'
 import { PieceMovement } from "./engine/PieceMovement";
 import { csvGenerator } from "../misc/functions";
@@ -12,33 +12,33 @@ function f() {
 }
 
 
-function ChessGame() {
+function CheckersGame() {
     const [size, setSize] = useState({
         boardWidth: f(),
         pieceWidth: (f()) / 8
     })
-    const [board, setBoard] = useState([] as ChessPiece[][] | null[][])
+    const [board, setBoard] = useState([] as CheckerPiece[][] | null[][])
     const [movementHistory, setMovementHistory] = useState([] as PieceMovement[])
-    const [availableMoves, setAvailableMoves] = useState({} as { [id: string]: boolean })
-    const [selectedPiece, setSelectedPiece] = useState(null as ChessPiece | null)
+    const [availableMoves, setAvailableMoves] = useState({} as { [id: string]: number[][] })
+    const [selectedPiece, setSelectedPiece] = useState(null as CheckerPiece | null)
 
-    const chessBoardRef = useRef(null as any as ChessBoard);
+    const checkerBoardRef = useRef(null as any as CheckerBoard);
 
     const [isWhiteTurnToPlay, setIsWhiteTurnToPlay] = useState(true);
     const [{ canUndo, canRedo }, setUndoAndRedo] = useState({ canUndo: false, canRedo: false });
 
 
     function reloadBoard() {
-        chessBoardRef.current.isWhiteTurnToPlay = !chessBoardRef.current.isWhiteTurnToPlay
-        setBoard(chessBoardRef.current.board)
-        setMovementHistory(chessBoardRef.current.getMovements())
+        checkerBoardRef.current.isWhiteTurnToPlay = !checkerBoardRef.current.isWhiteTurnToPlay
+        setBoard(checkerBoardRef.current.board)
+        setMovementHistory(checkerBoardRef.current.getMovements())
         setAvailableMoves({});
         setSelectedPiece(null);
-        setIsWhiteTurnToPlay(chessBoardRef.current.isWhiteTurnToPlay)
-        setUndoAndRedo({ canRedo: chessBoardRef.current.canRedo(), canUndo: chessBoardRef.current.canUndo() })
+        setIsWhiteTurnToPlay(checkerBoardRef.current.isWhiteTurnToPlay)
+        setUndoAndRedo({ canRedo: checkerBoardRef.current.canRedo(), canUndo: checkerBoardRef.current.canUndo() })
     }
     function init() {
-        chessBoardRef.current = new ChessBoard();
+        checkerBoardRef.current = new CheckerBoard();
 
         reloadBoard()
     }
@@ -66,12 +66,24 @@ function ChessGame() {
 
     }, [])
 
-    function onPieceClick(piece: ChessPiece | null, y: number, x: number) {
+    function onPieceClick(piece: CheckerPiece | null, y: number, x: number) {
+
         if (availableMoves[y + "," + x]) {
             if (!selectedPiece?.move(y, x)) {
                 // invalid move
                 return;
             }
+
+            const possibleJump = availableMoves[y + "," + x];
+
+
+            possibleJump.forEach(([y, x]) => {
+                checkerBoardRef.current.killedHash[y + ',' + x] = checkerBoardRef.current.board[y][x];
+                checkerBoardRef.current.board[y][x] = null;
+            })
+
+
+
 
             reloadBoard()
 
@@ -79,7 +91,7 @@ function ChessGame() {
 
 
         } else if (piece) {
-            devLog(piece.toString())
+            //devLog(piece.toString())
             if (isWhiteTurnToPlay !== piece.isPieceWhite) {
                 setAvailableMoves({});
                 setSelectedPiece(null);
@@ -89,11 +101,13 @@ function ChessGame() {
 
             // show available moves
             const a = piece.availableMoves();
+            //console.log(a)
 
-            const _: { [id: string]: boolean } = {}
+            const _: { [id: string]: number[][] } = {}
             a.forEach(m => {
+                const val = m.jumpPosition == undefined ? [] : m.jumpPosition;
 
-                _[m.positionYIndex + "," + m.positionXIndex] = true
+                _[m.positionYIndex + "," + m.positionXIndex] = val
             });
 
             setAvailableMoves(_);
@@ -106,12 +120,27 @@ function ChessGame() {
 
     }
     function performRedo() {
-        chessBoardRef.current.performRedo();
+        checkerBoardRef.current.performRedo();
         reloadBoard()
     }
     function performUndo() {
-        chessBoardRef.current.performUndo();
+        checkerBoardRef.current.performUndo();
         reloadBoard()
+    }
+    function save(){
+        const data = checkerBoardRef.current.serialize(true);
+        // @ts-ignore
+        localStorage.setItem("checkers",data);
+    }
+    function restore(){
+        const data = localStorage.getItem("checkers");
+        if(!data) return;
+        const board = CheckerBoard.deSerialize(data)
+        board.isWhiteTurnToPlay = !board.isWhiteTurnToPlay
+
+        checkerBoardRef.current = board;
+        reloadBoard()
+
     }
 
     return (
@@ -119,18 +148,18 @@ function ChessGame() {
 
             <div className="Chess-Field">
                 <div className="Chess-Pre-Playable">
-                    <Bar pieceWidth={size.pieceWidth} horizontal />
+
                     <div className="Chess-Playable">
-                        <Bar pieceWidth={size.pieceWidth} horizontal={false} />
+
                         <div className='Board' style={{ width: size.boardWidth + 'px', height: size.boardWidth + 'px' }} >
 
-                            {board.map((row: ChessPiece[] | null[], y: number) => {
+                            {board.map((row: CheckerPiece[] | null[], y: number) => {
 
                                 return (<div key={y} className='Board-Y' style={{ display: 'flex' }}>
 
 
 
-                                    {row.map((piece: ChessPiece | null, x: number) => {
+                                    {row.map((piece: CheckerPiece | null, x: number) => {
 
                                         const shouldHighlight = availableMoves[y + "," + x];
                                         return (<div onClick={() => onPieceClick(piece, y, x)} key={x} className='Board-X' style={{ width: size.pieceWidth + 'px', height: size.pieceWidth + 'px', backgroundColor: (x % 2 === 0) === (y % 2 === 0) ? 'rgba(245, 222, 179, 0.596)' : '' }}>
@@ -152,9 +181,9 @@ function ChessGame() {
                                 )
                             })}
                         </div>
-                        <Bar pieceWidth={size.pieceWidth} horizontal={false} />
+
                     </div>
-                    <Bar pieceWidth={size.pieceWidth} horizontal />
+
                     <div className="text-center">
                         {canUndo && <button onClick={performUndo} className="m-2">  <i className="fa fa-undo" /></button>}
                         {canRedo && <button onClick={performRedo} className="m-2">  <i className="fa fa-redo" /></button>}
@@ -162,16 +191,17 @@ function ChessGame() {
 
                     </div>
                 </div>
-              
                 <div className='Side' style={{ padding: '10px' }} >
                     <div className='' style={{ padding: '0 30px' }} >
                         Piece To Play
                         <br />
-                        <i className={'fa fa-chess '} style={{ color: isWhiteTurnToPlay ? 'white' : 'black' }} ></i>
+                        <i className={'fa fa-circle '} style={{ color: isWhiteTurnToPlay ? 'white' : 'black' }} ></i>
                         <hr />
                         <div style={{ textAlign: 'center' }}>
+                        <button onClick={save}><i className="fa fa-save" /></button>
+                        <button onClick={restore}><i className="fa fa-upload" /></button>
                             {movementHistory.length != 0 && <>
-                                <button onClick={() => { csvGenerator(movementHistory) }}><i className="fa fa-file-download" /></button>
+                                <button onClick={() => { csvGenerator(movementHistory as any) }}><i className="fa fa-file-download" /></button>
                                 <br />
                             </>}
                             {movementHistory.map((movement, key) => {
@@ -195,4 +225,4 @@ function ChessGame() {
     );
 }
 
-export default ChessGame;
+export default CheckersGame;

@@ -1,0 +1,66 @@
+.Whole-Body {
+  text-align: center;
+
+  background-color: #3c3f44;
+  min-height: 100vh;
+
+  font-size: calc(10px + 2vmin);
+  color: yellow;
+  box-sizing: border-box;
+
+}
+.Chess-Field{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.Chess-Playable{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.Board{
+
+  border: 1px solid white;
+}
+
+.Board-X{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Bar-X{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Piece-inner-valid:hover{
+background-color: rgba(129, 165, 189, 0.804);
+}
+.Piece-inner-invalid:hover{
+background-color: rgba(218, 42, 42, 0.719);
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .Chess-logo {
+    animation: Chess-logo-spin infinite 20s linear;
+  }
+}
+
+
+
+.Chess-link {
+  color: #61dafb;
+}
+
+@keyframes Chess-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

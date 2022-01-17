@@ -1,18 +1,19 @@
 import logo from './logo.svg';
 import { BrowserRouter, Link, Redirect, Route, Router, Switch } from 'react-router-dom'
 import ChessGame from './chess';
+import Home from './Home';
+import CheckersGame from './checkers';
 
 function App() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Switch>
-
-
         <Route path="/chess" component={ChessGame} />
+        <Route path="/checkers" component={CheckersGame} />
+        <Route path="/" component={Home} />
 
 
-        <Redirect path="/" to="chess" />
-
+      
 
 
       </Switch>
