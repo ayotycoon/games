@@ -27,16 +27,14 @@ export class CheckerBoard {
         this.board[0][2] = new CheckerPawn(this, 0, 2, false);
         this.board[0][4] = new CheckerPawn(this, 0, 4, false);
         this.board[0][6] = new CheckerPawn(this, 0, 6, false);
-
         this.board[1][1] = new CheckerPawn(this, 1, 1, false);
         this.board[1][3] = new CheckerPawn(this, 1, 3, false);
         this.board[1][5] = new CheckerPawn(this, 1, 5, false);
         this.board[1][7] = new CheckerPawn(this, 1, 7, false)
-
         this.board[2][0] = new CheckerPawn(this, 2, 0, false);
         this.board[2][2] = new CheckerPawn(this, 2, 2, false);
         this.board[2][4] = new CheckerPawn(this, 2, 4, false);
-        this.board[2][6] = new CheckerQueen(this, 2, 6, false);
+        this.board[2][6] = new CheckerPawn(this, 2, 6, false);
 
 
 
@@ -45,18 +43,14 @@ export class CheckerBoard {
         this.board[5][3] = new CheckerPawn(this, 5, 3, true);
         this.board[5][5] = new CheckerPawn(this, 5, 5, true);
         this.board[5][7] = new CheckerPawn(this, 5, 7, true);
-
         this.board[6][0] = new CheckerPawn(this, 6, 0, true);
         this.board[6][2] = new CheckerPawn(this, 6, 2, true);
         this.board[6][4] = new CheckerPawn(this, 6, 4, true);
         this.board[6][6] = new CheckerPawn(this, 6, 6, true);
-
         this.board[7][1] = new CheckerPawn(this, 7, 1, true);
         this.board[7][3] = new CheckerPawn(this, 7, 3, true);
         this.board[7][5] = new CheckerPawn(this, 7, 5, true);
         this.board[7][7] = new CheckerPawn(this, 7, 7, true);
-
-
 
 
 
@@ -178,8 +172,19 @@ export class CheckerBoard {
         const data: (number | boolean | PieceMovement[] | (string | (string | number | boolean)[])[] | (string | (string | number | boolean)[])[][])[] = JSON.parse(str);
 
         const [_board, _movements, _movementIndex, _isWhiteTurnToPlay, _killedHash] = data;
-        const board = (_board as (string | (string | number | boolean)[] | null)[][]).map((row) => row.map((piece) => piece == null ? null : checkerPieceDeSerialize(piece as any, checkerBoard)))
-        const movements = (_movements as any[][]).map(m => new PieceMovement(m[0],m[1],m[2],m[3],m[4],m[5],m[6],m[7],m[8]));
+        const board = (_board as (string | (string | number | boolean)[] | null)[][]).map((row) => row.map((_piece) => {
+
+
+            if (_piece == null) return null;
+
+            const piece = checkerPieceDeSerialize(_piece as any, checkerBoard);
+            if (piece == null) return null;
+            checkerBoard.pieceHash[piece.id] = piece
+
+            return piece;
+
+        }))
+        const movements = (_movements as any[][]).map(m => new PieceMovement(m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]));
         const movementIndex = _movementIndex as number;
         const isWhiteTurnToPlay = _isWhiteTurnToPlay as boolean;
         const killedHash: { [str: string]: CheckerPiece | null } = {};
