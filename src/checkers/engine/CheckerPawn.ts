@@ -69,7 +69,10 @@ export class CheckerPawn extends CheckerPiece {
 
             const possiblePiece = this.chessBoard.board[incY][incX]
             if (!possiblePiece) {
-                if (id != 0) return true;
+                if (id != 0 || 
+                    (this.isPieceWhite && positionYIndex < incY) || // avoid white pawns from going back
+                    (!this.isPieceWhite && positionYIndex > incY // avoid black bawns from going back
+                        )) return true;
                 addToHash({ positionYIndex: incY, positionXIndex: incX },true)
 
 
