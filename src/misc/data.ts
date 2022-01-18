@@ -3,12 +3,12 @@ export const NAVS = [
     {
         to:'/chess',
         name:'Chess',
-        img:'/assets/chess-banner.png'
+        img:process.env.PUBLIC_URL + '/assets/chess-banner.png'
     },
     {
         to:'/checkers',
         name:'Checkers',
-        img:'/assets/checkers-banner.png'
+        img:process.env.PUBLIC_URL + '/assets/checkers-banner.png'
     }
 ]
 
