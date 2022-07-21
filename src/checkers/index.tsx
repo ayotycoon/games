@@ -6,10 +6,9 @@ import { CheckerPiece } from "./engine/CheckerPiece";
 import { devLog } from '../env'
 import { PieceMovement } from "./engine/PieceMovement";
 import { csvGenerator } from "../misc/functions";
+import { f } from "../misc/data";
 
-function f() {
-    return Math.min(window.innerHeight, window.innerWidth) - 150
-}
+
 
 
 function CheckersGame() {

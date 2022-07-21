@@ -5,11 +5,11 @@ export const NAVS = [
         name:'Chess',
         img:process.env.PUBLIC_URL + '/assets/chess-banner.png'
     },
-    {
-        to:'/checkers',
-        name:'Checkers',
-        img:process.env.PUBLIC_URL + '/assets/checkers-banner.png'
-    }
+    // {
+    //     to:'/checkers',
+    //     name:'Checkers',
+    //     img:process.env.PUBLIC_URL + '/assets/checkers-banner.png'
+    // }
 ]
 
 export interface HashIndex {
@@ -21,4 +21,8 @@ export interface HashIndex {
 
 
     }
+}
+
+export function f() {
+    return Math.min(window.innerHeight, window.innerWidth)  - (150 + (window.innerWidth > 700 ? 100 : 0))
 }
